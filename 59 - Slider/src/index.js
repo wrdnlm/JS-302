@@ -6,6 +6,7 @@ class Slider {
   constructor(slider) {
     if (!slider) throw new Error('No slider selected!');
     this.slider = slider;
+    this.slides = [...slider.querySelectorAll('.slide')];
     this.currentSlide = '';
     this.prevSlide = '';
     this.nextSlide = '';
@@ -14,27 +15,26 @@ class Slider {
 
   init = () => {
     let { slider, handleSlideMovement } = this;
-    let slides = [...slider.querySelectorAll('.slide')];
     let btnPrev = slider.querySelector('.goToPrev');
     let btnNext = slider.querySelector('.goToNext');
-    this.currentSlide = slider.querySelector('.current') || slides[0];
-    this.prevSlide = this.currentSlide.previousElementSibling || slides[0];
-    this.nextSlide = this.currentSlide.nextElementSibling || slides[slides.length - 1];
+    this.currentSlide = slider.querySelector('.current') || this.slides[0];
+    this.prevSlide = this.currentSlide.previousElementSibling || this.slides[0];
+    this.nextSlide = this.currentSlide.nextElementSibling || this.slides[this.slides.length - 1];
 
-    btnPrev.addEventListener('click', () => handleSlideMovement('prev', slides));
-    btnNext.addEventListener('click', () => handleSlideMovement('next', slides));
+    btnPrev.addEventListener('click', () => handleSlideMovement('prev'));
+    btnNext.addEventListener('click', () => handleSlideMovement('next'));
     this.applyClasses();
   }
 
-  handleSlideMovement = (direction, slides) => {
+  handleSlideMovement = (direction) => {
     if (direction === 'prev') {
       this.prevSlide.classList.remove('prev', 'current', 'next');
       this.currentSlide.classList.remove('prev', 'current', 'next');
       this.nextSlide.classList.remove('prev', 'current', 'next');
 
       this.currentSlide = this.prevSlide;
-      this.prevSlide = this.currentSlide.previousElementSibling || slides[slides.length - 1];
-      this.nextSlide = this.currentSlide.nextElementSibling || slides[0];
+      this.prevSlide = this.currentSlide.previousElementSibling || this.slides[this.slides.length - 1];
+      this.nextSlide = this.currentSlide.nextElementSibling || this.slides[0];
       this.applyClasses();
     } else if (direction === 'next') {
       this.prevSlide.classList.remove('prev', 'current', 'next');
@@ -42,8 +42,8 @@ class Slider {
       this.nextSlide.classList.remove('prev', 'current', 'next');
 
       this.currentSlide = this.nextSlide;
-      this.prevSlide = this.currentSlide.previousElementSibling || slides[slides.length - 1];
-      this.nextSlide = this.currentSlide.nextElementSibling || slides[0];
+      this.prevSlide = this.currentSlide.previousElementSibling || this.slides[this.slides.length - 1];
+      this.nextSlide = this.currentSlide.nextElementSibling || this.slides[0];
       this.applyClasses();
     }
   }
